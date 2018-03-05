@@ -3,8 +3,11 @@
     <tool-bar
       :activeColor.sync="activeColor"
       :eraseActive="eraseActive"
+      :paletteSwatches="paletteSwatches"
+      @addPaletteSwatch="addPaletteSwatch"
       @toggleEraser="eraseActive = !eraseActive"
       @deletePixelColor="deletePixelColor"
+      @setActiveColor="setActiveColor($event)"
     />
     <pixel-board
       :pixels="pixels"
@@ -31,6 +34,7 @@ export default {
   data () {
     return {
       activeColor: '#3d3d3d',
+      paletteSwatches: [],
       eraseActive: false,
       pixelSum: 543,
       pixels: []
@@ -47,11 +51,20 @@ export default {
         this.pixels[index].color = this.activeColor
       }
     },
+    addPaletteSwatch (color) {
+      this.paletteSwatches.unshift({color: this.activeColor})
+      if (this.paletteSwatches.length > 5) {
+        this.paletteSwatches.length = 5
+      }
+    },
     deletePixelColor () {
       this.pixels = []
       for (let i = 0; i <= this.pixelSum; i++) {
         this.pixels.push({color: '#FFFFFF'})
       }
+    },
+    setActiveColor (color) {
+      this.activeColor = color
     }
   }
 }

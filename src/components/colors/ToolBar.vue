@@ -1,5 +1,20 @@
 <template>
   <div class="tool-bar">
+    <div class="color-palette-wrapper">
+      <button
+        class="btn btn-default tool-btn"
+        @click="$emit('addPaletteSwatch')"
+      >
+        <span>Save Color</span>
+      </button>
+      <button 
+        class="palette-swatch tool-btn" 
+        v-for="(swatch, index) in paletteSwatches"
+        :key="index"
+        :style="{ 'background-color': swatch.color }"
+        @click="$emit('setActiveColor', swatch.color)"
+      />
+    </div>
     <div class="color-picker-wrapper">
       <h2>Pick a color:</h2>
       <input
@@ -11,7 +26,7 @@
     </div>
     <div class="tools-wrapper">
       <button
-        class="btn btn-default btn-erase"
+        class="btn btn-default tool-btn"
         :class="{ 'active-eraser': eraseActive}"
         @click="$emit('toggleEraser')"
       >
@@ -19,7 +34,7 @@
         <span>Eraser</span>
       </button>
       <button
-        class="btn btn-danger btn-erase"
+        class="btn btn-danger tool-btn"
         @click="$emit('deletePixelColor')"
       >
         <icon name="bomb"/>
@@ -32,13 +47,29 @@
 <style scoped>
   .tool-bar {
     height: 50px;
+    padding: 0 30px;
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
     background-color: rgb(0, 162, 255);
   }
+  .color-palette-wrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+  }
+  .palette-swatch {
+    height: 38px;
+    width: 38px;
+    margin: 2.5px;
+    border: 0;
+    border-radius: 4px;
+  }
   .color-picker-wrapper {
-      
+    display: flex;
+    align-items: center;
+    flex-direction: row;
   }
   .color-picker {
     margin: 0 5px;
@@ -59,7 +90,7 @@
     border: none;
     border-radius: 4px;
   }
-  .btn-erase {
+  .tool-btn {
     cursor: pointer;
   }
   .active-eraser {
@@ -83,6 +114,9 @@ export default {
     eraseActive: {
       type: Boolean,
       default: false
+    },
+    paletteSwatches: {
+      type: Array
     }
   }
 }
